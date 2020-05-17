@@ -1,28 +1,14 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const { MONGOURL } = require('./config');
-const userRouter = require('./routes/user')
+require('./db/mongoose');
+const userRouter = require('./routes/user');
+const postRouter = require('./routes/post');
 
 const app = express();
 
 app.use(express.json());
-
-app.use(userRouter);
+app.use(userRouter, postRouter);
 
 const port = process.env.PORT || 3000;
-
-mongoose.connect(MONGOURL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
-
-mongoose.connection.on('connected', () => {
-    console.log('Connected to Mongodb');
-});
-
-mongoose.connection.on('error', (error) => {
-    console.log('Database connection error!', error);
-});
 
 app.listen(port, () => {
     console.log('Server is running on port ' + port);
