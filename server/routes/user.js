@@ -7,6 +7,7 @@ router.get('/', (req, res) => {
     res.send('Welcome to Microgram!');
 });
 
+//----------- SIGN UP -------------//
 router.post('/signup', async (req, res) => {
     const{ username, email, password }= req.body;
     if(!username || !email || !password){
@@ -35,6 +36,7 @@ router.post('/signup', async (req, res) => {
     };
 });
 
+//----------- SIGN IN -------------//
 router.post('/signin',async (req, res) => {
     try{
         const user = await User.findByCredentials( req.body.email, req.body.password );

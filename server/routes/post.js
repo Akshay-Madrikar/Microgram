@@ -4,6 +4,8 @@ const auth = require('../middlewares/auth');
 
 const router = express.Router();
 
+
+//------- CREATE POST ---------------//
 router.post('/createpost', auth, async (req, res) => {
     const { title, body } = req.body;
     if(!title || !body) {
@@ -28,6 +30,7 @@ router.post('/createpost', auth, async (req, res) => {
     };
 });
 
+//--------- ALL POSTS ---------------//
 router.get('/posts', async (req, res) => {
     try{
        const posts = await Post.find({}).populate('postedBy');
@@ -39,6 +42,7 @@ router.get('/posts', async (req, res) => {
     };
 });
 
+//------- PARTICULAR USER POSTS ---------------//
 router.get('/mypost', auth, async (req, res) => {
     try{
         const myPost = await Post.find({ 
