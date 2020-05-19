@@ -1,20 +1,34 @@
 const mongoose = require('mongoose');
 const bcryptjs = require('bcryptjs');
+const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const {JWT_SECRET} = require('../config');
 
 const userSchema  = new mongoose.Schema({
     username:{
         type: String,
+        trim: true,
         required: true
     },
     email:{
         type: String,
-        required: true
+        trim: true,
+        required: true,
+        validate(value){
+            if(!validator.isEmail(value)){
+                throw new Error('Please enter proper email address!');
+            }
+        }
     },
     password:{
         type: String,
-        required: true
+        trim: true,
+        required: true,
+        validate(value) {
+            if(validator.contains(value.toLowerCase(),'password')){
+                throw new Error('Your password must not contain password in it!');
+            }
+        }
     },
     tokens: [{
         token: {
