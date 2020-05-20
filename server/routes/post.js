@@ -7,8 +7,8 @@ const router = express.Router();
 
 //------- CREATE POST ---------------//
 router.post('/createpost', auth, async (req, res) => {
-    const { title, body } = req.body;
-    if(!title || !body) {
+    const { title, body, pic } = req.body;
+    if(!title || !body || !pic) {
         return res.status(400).json({
             error: "Please provide all details!"
         });
@@ -17,14 +17,16 @@ router.post('/createpost', auth, async (req, res) => {
     const post = new Post({
         title,
         body,
+        photo: pic,
         postedBy: req.user
     });
 
     try{
         await post.save();
-        res.status(201).send(
-            post
-        );
+        res.status(201).json({
+            post,
+            message: 'Post created successfully'
+        });
     } catch(error) {
         res.status(400).send(error);
     };

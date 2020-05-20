@@ -23,6 +23,7 @@ const SignIn = () => {
 
             const userJSON = await userData.json();
             console.log(userJSON)
+            
             if(userJSON.error) {
                 M.toast({ 
                     html: userJSON.error, 
@@ -34,6 +35,8 @@ const SignIn = () => {
                     classes: "#c62828 red darken-3"
                 });
             } else{
+                localStorage.setItem('jwt', userJSON.token);
+                localStorage.setItem('user', JSON.stringify(userJSON.user));
                 M.toast({
                     html: userJSON.message,
                     classes: "#43a047 green darken-1"
