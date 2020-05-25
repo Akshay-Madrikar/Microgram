@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { UserContext } from '../../App';
 import M from 'materialize-css';
 import './sign-in.styles.css';
 
 const SignIn = () => {
+    const { state, dispatch } = useContext(UserContext);
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
     const history = useHistory();
@@ -37,6 +39,10 @@ const SignIn = () => {
             } else{
                 localStorage.setItem('jwt', userJSON.token);
                 localStorage.setItem('user', JSON.stringify(userJSON.user));
+                dispatch({
+                    type: 'USER',
+                    payload: userJSON.user
+                });
                 M.toast({
                     html: userJSON.message,
                     classes: "#43a047 green darken-1"
