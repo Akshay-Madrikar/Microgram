@@ -1,22 +1,51 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './home.styles.css';
 
 const Home = () => {
+    const [data, setData] = useState([]);
+
+    const postDetails = async () => {
+        try{
+            const postData = await fetch('http://localhost:5000/posts', {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+                }
+            });
+    
+            const postJSON = await postData.json();
+            setData(postJSON.posts);
+        } catch(error) {
+            console.log(error);
+        }
+       
+    }
+
+    useEffect(() => {
+        postDetails();
+    },[]);
+
     return (
         <div className="main-home">
-            <div className="card home-card">
-
-                <h5>Ryaan</h5>
-                <div className="card-image">
-                    <img src="https://images.unsplash.com/photo-1544401447-515b289070ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" alt=""/>
-                </div>
-                <div className="card-content">
-                    <i className="material-icons like-button">favorite</i>
-                    <h6>Title</h6>
-                    <p>This is amazing</p>
-                    <input type="text" placeholder="Add a comment"/>
-                </div>
-            </div>
+            
+                {
+                    data.map( (post) => {
+                        return (
+                            <div key={post._id} className="card home-card">
+                                <h5>{post.postedBy.username}</h5>
+                                <div className="card-image">
+                                    <img src={post.photo} alt=""/>
+                                </div>
+                                <div className="card-content">
+                                    <i className="material-icons like-button">favorite</i>
+                                    <h6>{post.title}</h6>
+                                    <p>{post.body}</p>
+                                    <input type="text" placeholder="Add a comment"/>
+                                </div>
+                            </div>
+                        )
+                    })
+                }
+               
         </div>
     );
 };

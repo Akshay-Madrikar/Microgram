@@ -24,7 +24,6 @@ const SignIn = () => {
             });
 
             const userJSON = await userData.json();
-            console.log(userJSON)
             
             if(userJSON.error) {
                 M.toast({ 

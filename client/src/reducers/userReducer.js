@@ -1,10 +1,14 @@
 export const INTIAL_STATE = null;
 
 const userReducer = (state, action) => {
-    if(action.type === 'USER') {
-        return action.payload
-    } 
-    return state;
+    switch(action.type) {
+        case 'USER':
+            return action.payload
+        case 'CLEAR':
+            return null
+        default:
+            return state;
+    }
 };
 
 export default userReducer;

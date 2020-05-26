@@ -33,7 +33,7 @@ router.post('/createpost', auth, async (req, res) => {
 });
 
 //--------- ALL POSTS ---------------//
-router.get('/posts', async (req, res) => {
+router.get('/posts', auth, async (req, res) => {
     try{
        const posts = await Post.find({}).populate('postedBy');
        res.status(200).json({

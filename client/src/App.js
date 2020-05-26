@@ -25,7 +25,6 @@ const AppRouting = () => {
         type: 'USER',
         payload: user
       });
-      history.push('/');
     } else {
       history.push('/signin');
     }
