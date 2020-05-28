@@ -1,6 +1,6 @@
 export const INTIAL_STATE = null;
 
-const userReducer = (state, action) => {
+const UserReducer = (state, action) => {
     switch(action.type) {
         case 'USER':
             return action.payload
@@ -11,4 +11,4 @@ const userReducer = (state, action) => {
     }
 };
 
-export default userReducer;
+export default UserReducer;

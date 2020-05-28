@@ -63,4 +63,38 @@ router.get('/mypost', auth, async (req, res) => {
     };
 });
 
+//------- LIKE POSTS ---------------//
+router.put('/like', auth, async (req, res) => {
+    try{
+        const postLike = await Post.findByIdAndUpdate(req.body.postId, {
+            $push: { likes: req.user._id }    // Push likes into particular posts
+        }, {
+            new: true    //To get updated data
+        }).exec();
+
+        res.status(200).json(
+            postLike
+        )
+    } catch(error) {
+        res.status(400).send(error);    
+    }
+});
+
+//------- UNLIKE POSTS ---------------//
+router.put('/unlike', auth, async (req, res) => {
+    try{
+        const postLike = await Post.findByIdAndUpdate(req.body.postId, {
+            $pull: { likes: req.user._id }    // Pull likes from particular posts
+        }, {
+            new: true    //To get updated data
+        }).exec();
+
+        res.status(200).json(
+            postLike
+        )
+    } catch(error) {
+        res.status(400).send(error);
+    }
+})
+
 module.exports = router;
