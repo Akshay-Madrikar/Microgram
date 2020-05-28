@@ -35,7 +35,10 @@ router.post('/createpost', auth, async (req, res) => {
 //--------- ALL POSTS ---------------//
 router.get('/posts', auth, async (req, res) => {
     try{
-       const posts = await Post.find({}).populate('postedBy');
+       const posts = await Post.find({})
+       .populate('postedBy')
+       .populate('comments.postedBy', '_id username');
+
        res.status(200).json({
            posts
        })
@@ -96,5 +99,30 @@ router.put('/unlike', auth, async (req, res) => {
         res.status(400).send(error);
     }
 })
+
+//------- COMMENTS ON POSTS ---------------//
+router.put('/comment', auth, async (req, res) => {
+    try{
+        const comment = {
+            text: req.body.text,
+            postedBy: req.user._id
+        }
+
+        const postComments = await Post.findByIdAndUpdate(req.body.postId, {
+            $push: { comments: comment }    // Push likes into particular posts
+        }, {
+            new: true    //To get updated data
+        })
+        .populate('comments.postedBy', '_id username')
+        .populate('postedBy', '_id username')
+        .exec();
+
+        res.status(200).json(
+            postComments
+        )
+    } catch(error) {
+        res.status(400).send(error);    
+    }
+});
 
 module.exports = router;

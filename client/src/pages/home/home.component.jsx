@@ -19,6 +19,7 @@ const Home = () => {
             });
     
             const postJSON = await postData.json();
+            console.log(postJSON.posts)
             setData(postJSON.posts);
         } catch(error) {
             console.log(error);
@@ -49,7 +50,6 @@ const Home = () => {
                 }
             });
             setData(newData);
-
         } catch(error) {
             console.log(error);
         }
@@ -67,7 +67,6 @@ const Home = () => {
                     postId: id
                 })
             });
-    
             const unLikeJSON = await unLikesData.json();
 
             // Updating state
@@ -82,6 +81,31 @@ const Home = () => {
         } catch(error) {
             console.log(error);
         }
+    };
+
+    const postComment = async (text, postId) => {
+        const commentsData = await fetch('http://localhost:5000/comment',{
+            method: "put",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('jwt')
+            },
+            body: JSON.stringify({
+                text,
+                postId
+            })
+        });
+
+        const commentsJSON = await commentsData.json();
+
+        const newData = data.map((post) => {
+            if(post._id === commentsJSON._id) {
+                return commentsJSON;
+            } else {
+                return post;
+            }
+        })
+        setData(newData);
     };
 
     return (
@@ -102,7 +126,21 @@ const Home = () => {
                                     <h6>{post.likes.length} likes</h6>
                                     <h6>{post.title}</h6>
                                     <p>{post.body}</p>
-                                    <input type="text" placeholder="Add a comment"/>
+                                    {
+                                        post.comments.map((comment) => {
+                                            return (
+                                            <h6 key={comment._id}>
+                                                <span style={{fontWeight: "500"}}>{comment.postedBy.username}</span> {comment.text}
+                                            </h6>
+                                            )
+                                        })
+                                    }
+                                    <form onSubmit={(e) => {
+                                        e.preventDefault();
+                                        postComment(e.target[0].value, post._id)
+                                    }}>
+                                        <input type="text" placeholder="Add a comment"/>
+                                    </form>
                                 </div>
                             </div>
                         )
