@@ -41,9 +41,9 @@ router.post('/signin',async (req, res) => {
     try{
         const user = await User.findByCredentials( req.body.email, req.body.password );
         const token = await user.generateAuthToken();
-        const { _id, username, email } = user;
+        const { _id, username, email, followers, following } = user;
         res.status(202).json({
-            user: { _id, email, username },
+            user: { _id, email, username,followers, following },
             token,
             message: "Successfull login"
         });

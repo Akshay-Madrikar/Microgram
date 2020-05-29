@@ -4,6 +4,10 @@ a {
     color: black !important;
 }
 
+.main-navbar {
+    padding: 0 8px;
+}
+
 .brand-logo {
     font-family: 'Grand Hotel', cursive;
 }

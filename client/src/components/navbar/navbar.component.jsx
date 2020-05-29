@@ -12,6 +12,7 @@ const Navbar = () => {
             return [
                 <li key="profile"><Link to="/profile">Profile</Link></li>,
                 <li key="createPost"><Link to="/create">Create Post</Link></li>,
+                <li key="subscribedUserPost"><Link to="/followingPosts">Following</Link></li>,
                 <li key="logout">
                     <button className="btn waves-effect waves-light #64b5f6 blue darken-1" 
                         onClick={() => {
@@ -33,7 +34,7 @@ const Navbar = () => {
 
     return (
         <nav>
-            <div className="nav-wrapper white">
+            <div className="nav-wrapper white main-navbar">
             <Link to={ state ? '/' : '/signin' } className="brand-logo left">Microgram</Link>
                 <ul id="nav-mobile" className="right">
                     { renderList() }

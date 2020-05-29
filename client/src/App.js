@@ -7,6 +7,7 @@ import Profile from './pages/profile/profile.component';
 import SignUp from './pages/sign-up/sign-up.component';
 import CreatePost from './pages/create-post/create-post.component';
 import UserProfile from './pages/user-profile/user-profile.component';
+import SubscribedUserPosts from './pages/subscribed-user-posts/subscribed-user-posts.component';
 import UserReducer, { INTIAL_STATE } from './reducers/userReducer';
 import './App.css';
 
@@ -39,6 +40,7 @@ const AppRouting = () => {
       <Route exact path="/profile" component={Profile}/>
       <Route exact path="/create" component={CreatePost}/>
       <Route exact path="/profile/:userId" component={UserProfile}/>
+      <Route exact path="/followingPosts" component={SubscribedUserPosts}/>
   </Switch>
   )
 };

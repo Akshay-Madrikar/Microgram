@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../../App';
 import { Link } from 'react-router-dom';
-import './home.styles.css';
+import './subscribed-user-posts.styles.css';
 
-const Home = () => {
+const SubscribedUserPosts = () => {
     const [data, setData] = useState([]);
     const {state, dispatch} = useContext(UserContext);
 
@@ -13,7 +13,7 @@ const Home = () => {
 
     const postDetails = async () => {
         try{
-            const postData = await fetch('http://localhost:5000/posts', {
+            const postData = await fetch('http://localhost:5000/subscribedPosts', {
                 headers: {
                     "Authorization": "Bearer " +localStorage.getItem('jwt')
                 }
@@ -172,4 +172,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default SubscribedUserPosts;

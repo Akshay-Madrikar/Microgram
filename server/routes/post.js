@@ -139,4 +139,23 @@ router.delete('/deletePost/:postId', auth, async (req,res) => {
     }
 });
 
+//--------- ALL SUBSCRIBED USER POSTS ---------------//
+router.get('/subscribedPosts', auth, async (req, res) => {
+    try{
+       const posts = await Post.find({
+           postedBy : {
+            $in: req.user.following
+           }
+       })
+       .populate('postedBy')
+       .populate('comments.postedBy', '_id username');
+
+       res.status(200).json({
+           posts
+       })
+    } catch(error) {
+        res.status(400).send(error);
+    };
+});
+
 module.exports = router;
