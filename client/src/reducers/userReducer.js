@@ -6,6 +6,12 @@ const UserReducer = (state, action) => {
             return action.payload
         case 'CLEAR':
             return null
+        case 'UPDATE':
+            return {
+                ...state,
+                following: action.payload.following,
+                followers: action.payload.followers
+            }
         default:
             return state;
     }

@@ -75,9 +75,7 @@ router.put('/like', auth, async (req, res) => {
             new: true    //To get updated data
         }).exec();
 
-        res.status(200).json(
-            postLike
-        )
+        res.status(200).json(postLike)
     } catch(error) {
         res.status(400).send(error);    
     }
@@ -92,9 +90,7 @@ router.put('/unlike', auth, async (req, res) => {
             new: true    //To get updated data
         }).exec();
 
-        res.status(200).json(
-            postLike
-        )
+        res.status(200).json(postLike)
     } catch(error) {
         res.status(400).send(error);
     }
@@ -117,11 +113,29 @@ router.put('/comment', auth, async (req, res) => {
         .populate('postedBy', '_id username')
         .exec();
 
-        res.status(200).json(
-            postComments
-        )
+        res.status(200).json(postComments)
     } catch(error) {
         res.status(400).send(error);    
+    }
+});
+
+//------- DELETE POST ---------------//
+router.delete('/deletePost/:postId', auth, async (req,res) => {
+    try{
+        const deletePost = await Post.findOne({ _id: req.params.postId })
+        .populate('postedBy','_id')
+        .exec();
+    
+        if(!deletePost) {
+            return res.status(404).json({error: 'No post available!'})
+        };
+
+        if(deletePost.postedBy._id.toString() === req.user._id.toString()) {
+          const postData = await deletePost.remove();
+          res.status(200).json(postData);
+        }
+    } catch(error) {
+        res.status(400).send(error);
     }
 });
 

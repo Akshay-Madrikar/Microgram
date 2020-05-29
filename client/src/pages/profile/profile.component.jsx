@@ -35,9 +35,9 @@ const Profile = () => {
                 <div>
                     <h4>{state ? state.username : 'Loading...'}</h4>
                     <div className="info">
-                        <h6>40 posts</h6>
-                        <h6>10 followers</h6>
-                        <h6>20 following</h6>
+                        <h6>{post.length} posts</h6>
+                        <h6>{state ? state.followers.length : 'loading...'} followers</h6>
+                        <h6>{state ? state.following.length : 'loading...'} following</h6>
                     </div>
                 </div>
             </div>

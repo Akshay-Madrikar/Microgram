@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../../App';
+import { Link } from 'react-router-dom';
 import './home.styles.css';
 
 const Home = () => {
@@ -19,7 +20,6 @@ const Home = () => {
             });
     
             const postJSON = await postData.json();
-            console.log(postJSON.posts)
             setData(postJSON.posts);
         } catch(error) {
             console.log(error);
@@ -61,7 +61,7 @@ const Home = () => {
                 method: "put",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer " + localStorage.getItem('jwt')
+                    "Authorization": "Bearer " +localStorage.getItem('jwt')
                 },
                 body: JSON.stringify({
                     postId: id
@@ -88,7 +88,7 @@ const Home = () => {
             method: "put",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem('jwt')
+                "Authorization": "Bearer " +localStorage.getItem('jwt')
             },
             body: JSON.stringify({
                 text,
@@ -108,20 +108,42 @@ const Home = () => {
         setData(newData);
     };
 
+    const postDelete = async (postId) => {
+        const deletePost = await fetch(`http://localhost:5000/deletePost/${postId}`, {
+            method: "delete",
+            headers: {
+                "Authorization": "Bearer " +localStorage.getItem('jwt')
+            }
+        });
+        const deletePostJSON = await deletePost.json();
+        console.log(deletePostJSON)
+        const newData = data.filter((post) => {
+            return post._id !== deletePostJSON._id
+        });
+        setData(newData);
+    };
+
     return (
         <div className="main-home">
                 {
                     data.map((post) => {
                         return (
                             <div key={post._id} className="card home-card">
-                                <h5>{post.postedBy.username}</h5>
+                                <h5><Link to={post.postedBy._id !== state._id ? "/profile/"+post.postedBy._id : "/profile"}>{post.postedBy.username}</Link>
+                                { post.postedBy._id === state._id && 
+                                    <i className="material-icons delete-btn" 
+                                    onClick={() => postDelete(post._id)}>
+                                    delete
+                                    </i>
+                                }
+                                </h5>
                                 <div className="card-image">
                                     <img src={post.photo} alt=""/>
                                 </div>
                                 <div className="card-content">
                                     { post.likes.includes(state._id) 
-                                      ? <i className="material-icons" onClick={() => {postUnLike(post._id)}}>thumb_down</i>
-                                      : <i className="material-icons" onClick={() => {postLike(post._id)}}>thumb_up</i>
+                                      ? <i className="material-icons unlike-btn" onClick={() => {postUnLike(post._id)}}>thumb_down</i>
+                                      : <i className="material-icons like-btn" onClick={() => {postLike(post._id)}}>thumb_up</i>
                                     }
                                     <h6>{post.likes.length} likes</h6>
                                     <h6>{post.title}</h6>
@@ -137,9 +159,9 @@ const Home = () => {
                                     }
                                     <form onSubmit={(e) => {
                                         e.preventDefault();
-                                        postComment(e.target[0].value, post._id)
+                                        postComment(e.target[0].value, post._id);
                                     }}>
-                                        <input type="text" placeholder="Add a comment"/>
+                                        <input id="comment" type="text" placeholder="Add a comment"/>
                                     </form>
                                 </div>
                             </div>
