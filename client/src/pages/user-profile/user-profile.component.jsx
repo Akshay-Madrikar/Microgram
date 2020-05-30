@@ -5,9 +5,9 @@ import './user-profile.styles.css';
 
 const UserProfile = () => {
     const [userProfile, setProfile] = useState(null);
-    const [showFollow, setShowFollow] = useState(true);
     const {state, dispatch} = useContext(UserContext);
     const { userId } = useParams();
+    const [showFollow, setShowFollow] = useState(state ? !state.following.includes(userId) : true);
 
     useEffect(() => {
         postDetails();
@@ -114,7 +114,7 @@ const UserProfile = () => {
             <div className="main-profile">
                 <div className="inner-div">
                     <div>
-                        <img className="profile-pic" src="https://images.unsplash.com/photo-1585602173562-e7eeb0e6f380?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" 
+                        <img className="profile-pic" src={userProfile.user.pic}
                         alt=""/>
                     </div>
                     <div>

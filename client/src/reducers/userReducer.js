@@ -12,6 +12,11 @@ const UserReducer = (state, action) => {
                 following: action.payload.following,
                 followers: action.payload.followers
             }
+        case 'UPDATE_PIC':
+            return {
+            ...state,
+            pic: action.payload
+            }
         default:
             return state;
     }

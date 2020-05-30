@@ -4,16 +4,36 @@
     margin: 26px auto;
 }
 
+.display-pic {
+    margin-right: 8px;
+    width: 35px;
+    height: 35px;
+    border-radius: 80px;
+}
+
+.display-name {
+    margin: 5px 0;
+}
+
 .posted-by {
+    display: flex;
+    justify-content: space-between;
     padding: 8px;
     font-weight: bold;
 }
 
-.like-button {
-    color: red;
+.react-post {
+    display: flex;
+}
+
+.likes {
+    margin: 3px 0;
+    padding: 3px;
+    font-weight: bold; 
 }
 
 .like-btn, .unlike-btn {
+    margin: 3px 0;
     cursor: pointer;
 }
 

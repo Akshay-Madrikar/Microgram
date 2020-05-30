@@ -30,6 +30,10 @@ const userSchema  = new mongoose.Schema({
             }
         }
     },
+    pic: {
+        type: String,
+        default: 'https://res.cloudinary.com/dexkk3lc4/image/upload/v1590826851/default-profile-picture_y2bf4v.png'
+    },
     followers: [
         {
             type: mongoose.Schema.Types.ObjectId,

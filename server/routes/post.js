@@ -73,8 +73,11 @@ router.put('/like', auth, async (req, res) => {
             $push: { likes: req.user._id }    // Push likes into particular posts
         }, {
             new: true    //To get updated data
-        }).exec();
-
+        })
+        .populate('comments.postedBy', '_id username')
+        .populate('postedBy', '_id username')
+        .exec()
+        
         res.status(200).json(postLike)
     } catch(error) {
         res.status(400).send(error);    
@@ -88,7 +91,10 @@ router.put('/unlike', auth, async (req, res) => {
             $pull: { likes: req.user._id }    // Pull likes from particular posts
         }, {
             new: true    //To get updated data
-        }).exec();
+        })
+        .populate('comments.postedBy', '_id username')
+        .populate('postedBy', '_id username')
+        .exec()
 
         res.status(200).json(postLike)
     } catch(error) {

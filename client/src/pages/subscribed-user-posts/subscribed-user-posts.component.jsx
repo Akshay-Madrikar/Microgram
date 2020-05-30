@@ -129,23 +129,32 @@ const SubscribedUserPosts = () => {
                     data.map((post) => {
                         return (
                             <div key={post._id} className="card home-card">
-                                <h5 className="posted-by"><Link to={post.postedBy._id !== state._id ? "/profile/"+post.postedBy._id : "/profile"}>{post.postedBy.username}</Link>
-                                { post.postedBy._id === state._id && 
-                                    <i className="material-icons delete-btn" 
-                                    onClick={() => postDelete(post._id)}>
-                                    delete
-                                    </i>
-                                }
+                                <h5 className="posted-by">
+                                    <div className="display-main">
+                                        <Link to={post.postedBy._id !== state._id ? "/profile/"+post.postedBy._id : "/profile"}>
+                                        <img className="display-pic" src={post.postedBy.pic}/>
+                                        <span className="display-name">{post.postedBy.username}</span></Link>
+                                    </div>
+                                    <div className="delete-btn">
+                                        { post.postedBy._id === state._id && 
+                                            <i className="material-icons" 
+                                            onClick={() => postDelete(post._id)}>
+                                            delete
+                                            </i>
+                                        }
+                                    </div>
                                 </h5>
                                 <div className="card-image">
                                     <img src={post.photo} alt=""/>
                                 </div>
                                 <div className="card-content">
-                                    { post.likes.includes(state._id) 
-                                      ? <i className="material-icons unlike-btn" onClick={() => {postUnLike(post._id)}}>thumb_down</i>
-                                      : <i className="material-icons like-btn" onClick={() => {postLike(post._id)}}>thumb_up</i>
-                                    }
-                                    <h6>{post.likes.length} likes</h6>
+                                    <div className="react-post">
+                                        { post.likes.includes(state._id) 
+                                        ? <i className="material-icons unlike-btn" onClick={() => {postUnLike(post._id)}}>thumb_down</i>
+                                        : <i className="material-icons like-btn" onClick={() => {postLike(post._id)}}>thumb_up</i>
+                                        }
+                                        <h6 className="likes">{post.likes.length}</h6>
+                                    </div>
                                     <h6>{post.title}</h6>
                                     <p>{post.body}</p>
                                     {
@@ -160,6 +169,7 @@ const SubscribedUserPosts = () => {
                                     <form onSubmit={(e) => {
                                         e.preventDefault();
                                         postComment(e.target[0].value, post._id);
+                                        e.target[0].value = '';
                                     }}>
                                         <input id="comment" type="text" placeholder="Add a comment"/>
                                     </form>
