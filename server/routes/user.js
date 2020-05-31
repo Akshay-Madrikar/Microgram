@@ -1,8 +1,18 @@
 const express = require('express');
 const User = require('../models/user');
 const auth = require('../middlewares/auth');
+const nodemailer = require('nodemailer');
+const sendgridTransport = require('nodemailer-sendgrid-transport');
+const crypto = require('crypto');
+const { SEND_GRID_API } = require('../config');
 
 const router = express.Router();
+
+const transporter = nodemailer.createTransport(sendgridTransport({
+    auth: {
+        api_key: SEND_GRID_API
+    }
+}));
 
 router.get('/', (req, res) => {
     res.send('Welcome to Microgram!');
@@ -27,6 +37,15 @@ router.post('/signup', async (req, res) => {
         }
        await user.save();
        const token = await user.generateAuthToken();
+       
+       transporter.sendMail({
+           to: user.email,
+           from: 'no-reply@microgram.com',
+           subject: 'Sign-up success',
+           html: `<h1>Welcome ${user.username} to Microgram!</h1> </br>
+                  <h4>We're happy to serve you :)</h4>`
+       });
+
        res.status(201).json({
            user,
            token,
@@ -40,7 +59,7 @@ router.post('/signup', async (req, res) => {
 //----------- SIGN IN -------------//
 router.post('/signin',async (req, res) => {
     try{
-        const user = await User.findByCredentials( req.body.email, req.body.password );
+        const user = await User.findByCredentials( req.body.username, req.body.password );
         const token = await user.generateAuthToken();
         const { _id, username, email, pic, followers, following } = user;
         res.status(202).json({
@@ -49,7 +68,7 @@ router.post('/signin',async (req, res) => {
             message: "Successfull login"
         });
     } catch(error) {
-        res.status(400).send({error: 'Email or password incorrect!'});
+        res.status(400).send({error: 'Username or password incorrect!'});
     };
 });
 
@@ -68,4 +87,70 @@ router.put('/updatePicture', auth, async (req, res) => {
         res.status(400).send({error: 'Email or password incorrect!'});
     }
 });
+
+//----------- RESET PASSWORD -------------//
+router.post('/reset-password', async (req, res) => {
+    crypto.randomBytes(32, async (error, buffer) => {
+        if(error){
+            console.log(error);
+        };
+
+        const token = buffer.toString('hex');
+        
+        try{
+            const user = await User.findOne({ email: req.body.email })
+            if(!user) {
+                return res.status(400).json({error: 'No user exists with that email!'});
+            }
+            user.resetToken = token;
+            user.expireToken = Date.now() + 3600000;
+            await user.save();
+    
+            transporter.sendMail({
+                to: user.email,
+                from: 'no-reply@microgram.com',
+                subject: 'Reset password',
+                html: `<p>Hello ${user.username}, you've requested to reset your password</p> </br>
+                      <h4>Click on this <a href="http://localhost:3000/reset-password/${token}">link</a> to reset your password</h4>`
+            });
+    
+            res.status(200).json({
+                message: 'Check your email!'
+            });
+        } catch(error) {
+            res.status(400).json({error});
+        }
+    });
+});
+
+//----------- SET NEW PASSWORD -------------//
+router.post('/new-password', async (req, res) => {
+    try{
+        const newPassword = req.body.password;
+        const sentToken = req.body.token;
+    
+        const user = await User.findOne({
+            resetToken: sentToken,
+            expireToken: {
+                $gt: Date.now()
+            }
+        });
+        if(!user) {
+            return res.status(400).json({error: 'Session expired!'});
+        }
+
+        // No need to hash, as in model I've written the code for hashing before save()
+        user.password = newPassword;
+        user.resetToken = undefined;
+        user.expireToken = undefined;
+
+        await user.save();
+        res.status(201).json({
+            message: 'Password updated successfully!'
+        });
+    } catch(error) {
+        res.status(400).json({error});
+    }
+});
+
 module.exports = router;

@@ -14,8 +14,8 @@ const UserReducer = (state, action) => {
             }
         case 'UPDATE_PIC':
             return {
-            ...state,
-            pic: action.payload
+                ...state,
+                pic: action.payload
             }
         default:
             return state;

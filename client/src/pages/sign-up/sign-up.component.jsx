@@ -92,7 +92,7 @@ const SignUp = () => {
                 <input type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                 <div className="file-field">
                     <div className="btn #64b5f6 blue darken-1">
-                        <span>Upload Profile</span>
+                        <span>Upload Profile Picture</span>
                         <input type="file" onChange={(e) => setImage(e.target.files[0])}/>
                     </div>
                     <div className="file-path-wrapper">

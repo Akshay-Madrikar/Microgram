@@ -46,6 +46,12 @@ const userSchema  = new mongoose.Schema({
             ref: 'User'
         }
     ],
+    resetToken: {
+        type: String
+    },
+    expireToken: {
+        type: Date
+    },
     tokens: [{
         token: {
             type: String,
@@ -86,8 +92,8 @@ userSchema.statics.findByEmailAddress = async (email) => {
     return user;
 };
 
-userSchema.statics.findByCredentials = async (email, password) => {
-    const user = await User.findOne({ email });
+userSchema.statics.findByCredentials = async (username, password) => {
+    const user = await User.findOne({ username });
     if(!user) {
         throw new Error();
     };
@@ -107,6 +113,7 @@ userSchema.pre('save', async function(next) {
 
     if(user.isModified('password')) {
         user.password = await bcryptjs.hash(user.password, 8);
+        console.log('Model : ' + user.passowrd)
     }
     next();
 });

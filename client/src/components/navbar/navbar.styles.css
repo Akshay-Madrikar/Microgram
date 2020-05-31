@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Passero+One&display=swap');
 
 a {
     color: black !important;
@@ -9,5 +10,5 @@ a {
 }
 
 .brand-logo {
-    font-family: 'Grand Hotel', cursive;
+    font-family: 'Passero One', cursive;
 }

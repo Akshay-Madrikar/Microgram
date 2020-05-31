@@ -1,29 +1,29 @@
-import React, {useState, useContext} from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { UserContext } from '../../App';
+import React, {useState} from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import M from 'materialize-css';
-import './sign-in.styles.css';
+import './new-password.styles.css';
 
-const SignIn = () => {
-    const { state, dispatch } = useContext(UserContext);
-    const [ username, setUsername ] = useState("");
+const NewPassword = () => {
     const [ password, setPassword ] = useState("");
     const history = useHistory();
+    const { token } = useParams();
+    console.log(token)
 
     const postData = async() => {
         try{
-            const userData = await fetch('http://localhost:5000/signin', {
+            const userData = await fetch('http://localhost:5000/new-password', {
                 method: "post",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    username,
-                    password
+                    password,
+                    token
                 })
             });
 
             const userJSON = await userData.json();
+            console.log(userJSON)
             
             if(userJSON.error) {
                 M.toast({ 
@@ -36,20 +36,14 @@ const SignIn = () => {
                     classes: "#c62828 red darken-3"
                 });
             } else{
-                localStorage.setItem('jwt', userJSON.token);
-                localStorage.setItem('user', JSON.stringify(userJSON.user));
-                dispatch({
-                    type: 'USER',
-                    payload: userJSON.user
-                });
                 M.toast({
                     html: userJSON.message,
                     classes: "#43a047 green darken-1"
                 });
-                history.push('/');
+                history.push('/signin');
             }
         } catch (error) {
-            console.log({error});
+            console.log(error);
         }
     }
 
@@ -57,20 +51,13 @@ const SignIn = () => {
         <div className="mycard">
             <div className="card auth-card input-field">
                 <h2>Microgram</h2>
-                <input type="text" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)}/>
-                <input type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                <input type="password" placeholder="enter new password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                 <button className="btn waves-effect waves-light #64b5f6 blue darken-1" onClick={() => postData()}>
-                    Login
+                    Update password
                 </button>
-                <h5>
-                    <Link to="/signup">Don't have an account?</Link>
-                </h5>
-                <h6>
-                    <Link to="/reset-password">Forgot your password?</Link>
-                </h6>
             </div>
       </div>
     );
 };
 
-export default SignIn;
+export default NewPassword;
