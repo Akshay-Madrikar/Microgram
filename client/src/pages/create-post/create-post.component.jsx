@@ -4,7 +4,6 @@ import M from 'materialize-css';
 import './create-post.styles.css';
 
 const CreatePost = () => {
-    const [ title, setTitle ] = useState("");
     const [ body, setBody ] = useState("");
     const [ image, setImage ] = useState("");
     const [ url, setUrl ] = useState("");
@@ -38,14 +37,13 @@ const CreatePost = () => {
     const postData = async() => {
        
         try{
-            const imgData = await fetch('http://localhost:5000/createpost', {
+            const imgData = await fetch('/createpost', {
                 method: "post",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer "+localStorage.getItem('jwt')
                 },
                 body: JSON.stringify({
-                    title,
                     body,
                     pic: url
                 })
@@ -77,7 +75,6 @@ const CreatePost = () => {
 
     return (
         <div className="card fill-input">
-            <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)}/>
             <input type="text" placeholder="Body" value={body} onChange={(e) => setBody(e.target.value)}/>
             <div className="file-field input-field">
                 <div className="btn #64b5f6 blue darken-1">

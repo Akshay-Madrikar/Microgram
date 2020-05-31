@@ -12,7 +12,7 @@ const SignIn = () => {
 
     const postData = async() => {
         try{
-            const userData = await fetch('http://localhost:5000/signin', {
+            const userData = await fetch('/signin', {
                 method: "post",
                 headers: {
                     "Content-Type": "application/json"

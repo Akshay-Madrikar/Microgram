@@ -10,7 +10,7 @@ const ResetPassword = () => {
 
     const postData = async() => {
         try{
-            const userData = await fetch('http://localhost:5000/reset-password', {
+            const userData = await fetch('/reset-password', {
                 method: "post",
                 headers: {
                     "Content-Type": "application/json"

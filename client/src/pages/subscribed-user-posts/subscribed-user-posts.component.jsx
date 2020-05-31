@@ -13,7 +13,7 @@ const SubscribedUserPosts = () => {
 
     const postDetails = async () => {
         try{
-            const postData = await fetch('http://localhost:5000/subscribedPosts', {
+            const postData = await fetch('/subscribedPosts', {
                 headers: {
                     "Authorization": "Bearer " +localStorage.getItem('jwt')
                 }
@@ -29,7 +29,7 @@ const SubscribedUserPosts = () => {
 
     const postLike = async (id) => {
         try{
-            const likesData = await fetch('http://localhost:5000/like', {
+            const likesData = await fetch('/like', {
                 method: "put",
                 headers: {
                     "Content-Type": "application/json",
@@ -57,7 +57,7 @@ const SubscribedUserPosts = () => {
 
     const postUnLike = async(id) => {
         try{
-            const unLikesData = await fetch('http://localhost:5000/unlike', {
+            const unLikesData = await fetch('/unlike', {
                 method: "put",
                 headers: {
                     "Content-Type": "application/json",
@@ -84,7 +84,7 @@ const SubscribedUserPosts = () => {
     };
 
     const postComment = async (text, postId) => {
-        const commentsData = await fetch('http://localhost:5000/comment',{
+        const commentsData = await fetch('/comment',{
             method: "put",
             headers: {
                 "Content-Type": "application/json",
@@ -109,7 +109,7 @@ const SubscribedUserPosts = () => {
     };
 
     const postDelete = async (postId) => {
-        const deletePost = await fetch(`http://localhost:5000/deletePost/${postId}`, {
+        const deletePost = await fetch(`/deletePost/${postId}`, {
             method: "delete",
             headers: {
                 "Authorization": "Bearer " +localStorage.getItem('jwt')
@@ -132,7 +132,7 @@ const SubscribedUserPosts = () => {
                                 <h5 className="posted-by">
                                     <div className="display-main">
                                         <Link to={post.postedBy._id !== state._id ? "/profile/"+post.postedBy._id : "/profile"}>
-                                        <img className="display-pic" src={post.postedBy.pic}/>
+                                        <img className="display-pic" src={post.postedBy.pic} alt="profile picture of user"/>
                                         <span className="display-name">{post.postedBy.username}</span></Link>
                                     </div>
                                     <div className="delete-btn">

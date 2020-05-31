@@ -13,7 +13,7 @@ const Home = () => {
 
     const postDetails = async () => {
         try{
-            const postData = await fetch('http://localhost:5000/posts', {
+            const postData = await fetch('/posts', {
                 headers: {
                     "Authorization": "Bearer " +localStorage.getItem('jwt')
                 }
@@ -30,7 +30,7 @@ const Home = () => {
 
     const postLike = async (id) => {
         try{
-            const likesData = await fetch('http://localhost:5000/like', {
+            const likesData = await fetch('/like', {
                 method: "put",
                 headers: {
                     "Content-Type": "application/json",
@@ -58,7 +58,7 @@ const Home = () => {
 
     const postUnLike = async(id) => {
         try{
-            const unLikesData = await fetch('http://localhost:5000/unlike', {
+            const unLikesData = await fetch('/unlike', {
                 method: "put",
                 headers: {
                     "Content-Type": "application/json",
@@ -85,7 +85,7 @@ const Home = () => {
     };
 
     const postComment = async (text, postId) => {
-        const commentsData = await fetch('http://localhost:5000/comment',{
+        const commentsData = await fetch('/comment',{
             method: "put",
             headers: {
                 "Content-Type": "application/json",
@@ -110,7 +110,7 @@ const Home = () => {
     };
 
     const postDelete = async (postId) => {
-        const deletePost = await fetch(`http://localhost:5000/deletePost/${postId}`, {
+        const deletePost = await fetch(`/deletePost/${postId}`, {
             method: "delete",
             headers: {
                 "Authorization": "Bearer " +localStorage.getItem('jwt')

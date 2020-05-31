@@ -15,7 +15,7 @@ const UserProfile = () => {
 
     const postDetails = async () => {
         try{
-            const postData = await fetch(`http://localhost:5000/user/${userId}`, {
+            const postData = await fetch(`/user/${userId}`, {
                 headers: {
                     "Authorization": "Bearer " + localStorage.getItem('jwt')
                 }
@@ -30,7 +30,7 @@ const UserProfile = () => {
 
     const followUser = async() => {
         try{
-            const data = await fetch('http://localhost:5000/follow', {
+            const data = await fetch('/follow', {
                 method: "put",
                 headers: {
                     "Content-Type": "application/json",
@@ -69,7 +69,7 @@ const UserProfile = () => {
     
     const unfollowUser = async() => {
         try{
-            const data = await fetch('http://localhost:5000/unfollow', {
+            const data = await fetch('/unfollow', {
                 method: "put",
                 headers: {
                     "Content-Type": "application/json",

@@ -12,3 +12,16 @@ a {
 .brand-logo {
     font-family: 'Passero One', cursive;
 }
+
+.modal {
+    color: black;
+}
+
+.collection {
+    width: 100%;
+}
+
+.search-bar {
+    cursor: pointer;
+    color: black;
+}

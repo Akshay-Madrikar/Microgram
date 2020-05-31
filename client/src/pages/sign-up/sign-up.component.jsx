@@ -38,7 +38,7 @@ const SignUp = () => {
 
     const uploadPostData = async () => {
         try{
-            const userData = await fetch('http://localhost:5000/signup', {
+            const userData = await fetch('/signup', {
                 method: "post",
                 headers: {
                     "Content-Type": "application/json"

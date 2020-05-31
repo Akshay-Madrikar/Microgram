@@ -9,7 +9,7 @@ const Profile = () => {
 
     const myPostDetails = async () => {
         try{
-            const postData = await fetch('http://localhost:5000/mypost', {
+            const postData = await fetch('/mypost', {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('jwt')
                 }
@@ -40,7 +40,7 @@ const Profile = () => {
             const imgJSON = await img.json();
             console.log(imgJSON)
 
-            const imgData = await fetch('http://localhost:5000/updatePicture', {
+            const imgData = await fetch('/updatePicture', {
                 method: "put",
                 headers: {
                     "Content-Type": "application/json",

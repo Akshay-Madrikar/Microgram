@@ -11,7 +11,7 @@ const NewPassword = () => {
 
     const postData = async() => {
         try{
-            const userData = await fetch('http://localhost:5000/new-password', {
+            const userData = await fetch('/new-password', {
                 method: "post",
                 headers: {
                     "Content-Type": "application/json"
